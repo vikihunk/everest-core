@@ -53,15 +53,13 @@ libcurl:
 # This has to appear before libocpp in this file since it is also a direct dependency of libocpp
 # and would otherwise be overwritten by the version used there
 libevse-security:
-  git: https://github.com/EVerest/libevse-security.git
-  git_tag: b140c17b0a5eaf09b60035605ed8aeb84627eb78
-  cmake_condition: "EVEREST_DEPENDENCY_ENABLED_LIBEVSE_SECURITY"
+  git: https://github.com/vikihunk/libevse-security.git
+  git_tag: 6946c49
 
 # OCPP
 libocpp:
-  git: https://github.com/EVerest/libocpp.git
-  git_tag: 01f064f45f6d0ff44605db07373e4b9ea02b63b8
-  cmake_condition: "EVEREST_DEPENDENCY_ENABLED_LIBOCPP"
+  git: https://github.com/vikihunk/libocpp.git
+  git_tag: 9eceb2b
 # Josev
 Josev:
   git: https://github.com/EVerest/ext-switchev-iso15118.git
