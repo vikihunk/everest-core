@@ -1,0 +1,77 @@
+description: A OCPP charge point / charging station module for OCPP 2.0.1
+config:
+  MessageLogPath:
+    description: Path to folder where logs of all OCPP messages get written to
+    type: string
+    default: /tmp/everest_ocpp_logs
+  CoreDatabasePath:
+    description: Path to the persistent SQLite database folder
+    type: string
+    default: /tmp/ocpp201
+  DeviceModelDatabasePath:
+    description: Path to the SQLite database for the device model
+    type: string
+    default: device_model_storage.db
+  DeviceModelDatabaseMigrationPath:
+    description: Path to the migration files for the device model
+    type: string
+    default: device_model_migrations
+  DeviceModelSchemaPath:
+    description: Path to the device model component schema directory
+    type: string
+    default: component_schemas
+  ConfigFilePath:
+    description: Path to the configuration file of libocpp
+    type: string
+    default: config.json
+  EnableExternalWebsocketControl:
+    description: If true websocket can be disconnected and connected externally
+    type: boolean
+    default: false
+  MessageQueueResumeDelay:
+    description: Time (seconds) to delay resuming the message queue after reconnecting
+    type: integer
+    default: 0
+provides:
+  main:
+    description: This is a OCPP 2.0.1 charge point
+    interface: empty
+  auth_validator:
+    description: Validates the provided token using CSMS, AuthorizationList or AuthorizationCache
+    interface: auth_token_validator
+  auth_provider:
+    description: Provides authorization requests by CSMS
+    interface: auth_token_provider
+  data_transfer:
+    description: OCPP data transfer towards the CSMS
+    interface: ocpp_data_transfer
+  ocpp_generic:
+    description: Generic OCPP interface.
+    interface: ocpp
+requires:
+  evse_manager:
+    interface: evse_manager
+    min_connections: 1
+    max_connections: 128
+  system:
+    interface: system
+    min_connections: 1
+    max_connections: 1
+  security:
+    interface: evse_security
+    min_connections: 1
+    max_connections: 1
+  data_transfer:
+    interface: ocpp_data_transfer
+    min_connections: 0
+    max_connections: 1
+  auth:
+    interface: auth
+    min_connections: 1
+    max_connections: 1
+enable_external_mqtt: true
+metadata:
+  license: https://opensource.org/licenses/Apache-2.0
+  authors:
+    - Piet Gömpel
+    - Kai-Uwe Hermann

@@ -1,0 +1,484 @@
+description: ISO15118 charger types
+types:
+  PaymentOption:
+    description: Payment options for the SECC and EVCC
+    type: string
+    enum:
+      - Contract
+      - ExternalPayment
+  EnergyTransferMode:
+    description: Possible energy transfer modes
+    type: string
+    enum:
+      - AC_single_phase_core
+      - AC_three_phase_core
+      - DC_core
+      - DC_extended
+      - DC_combo_core
+      - DC_unique
+  IsolationStatus:
+    description: The different charger isolation status
+    type: string
+    enum:
+      - Invalid
+      - Valid
+      - Warning
+      - Fault
+      - No_IMD
+  DC_EVErrorCode:
+    description: Indicates the DC EV internal status
+    type: string
+    enum:
+      - NO_ERROR
+      - FAILED_RESSTemperatureInhibit
+      - FAILED_EVShiftPosition
+      - FAILED_ChargerConnectorLockFault
+      - FAILED_EVRESSMalfunction
+      - FAILED_ChargingCurrentdifferentia
+      - FAILED_ChargingVoltageOutOfRange
+      - Reserved_A
+      - Reserved_B
+      - Reserved_C
+      - FAILED_ChargingSystemIncompatibility
+      - NoData
+  EvseError:
+    description: >-
+      Details on error type
+        Error_Contactor: The contactor is opened or closed at the wrong moment.
+        Error_RCD: The RCD has detected an error.
+        Error_UtilityInterruptEvent: Utility Interrupt Event, Utility or Equipment operator has requested a temporary reduction in load
+        Error_Malfunction: A non-recoverable charger fault has occurred (Isolation Failure, ...). It is permanently faulted.
+        Error_EmergencyShutdown: Charging System Incompatibility, Emergency Shutdown or E-Stop button pressed at charging station
+    type: string
+    enum:
+      - Error_Contactor
+      - Error_RCD
+      - Error_UtilityInterruptEvent
+      - Error_Malfunction
+      - Error_EmergencyShutdown
+  V2G_Message_ID:
+    description: This element contains the id of the v2g message body
+    type: string
+    enum:
+      - SupportedAppProtocolReq
+      - SupportedAppProtocolRes
+      - SessionSetupReq
+      - SessionSetupRes
+      - ServiceDiscoveryReq
+      - ServiceDiscoveryRes
+      - ServiceDetailReq
+      - ServiceDetailRes
+      - PaymentServiceSelectionReq
+      - PaymentServiceSelectionRes
+      - ServicePaymentSelectionReq
+      - ServicePaymentSelectionRes
+      - PaymentDetailsReq
+      - PaymentDetailsRes
+      - AuthorizationReq
+      - AuthorizationRes
+      - ContractAuthenticationReq
+      - ContractAuthenticationRes
+      - ChargeParameterDiscoveryReq
+      - ChargeParameterDiscoveryRes
+      - ChargingStatusReq
+      - ChargingStatusRes
+      - MeteringReceiptReq
+      - MeteringReceiptRes
+      - PowerDeliveryReq
+      - PowerDeliveryRes
+      - CableCheckReq
+      - CableCheckRes
+      - PreChargeReq
+      - PreChargeRes
+      - CurrentDemandReq
+      - CurrentDemandRes
+      - WeldingDetectionReq
+      - WeldingDetectionRes
+      - SessionStopReq
+      - SessionStopRes
+      - CertificateInstallationReq
+      - CertificateInstallationRes
+      - CertificateUpdateReq
+      - CertificateUpdateRes
+      - UnknownMessage
+  SAE_J2847_Bidi_Mode:
+    description: Bidi mode for sae j2847_2 
+    type: string
+    enum:
+      - None
+      - V2G
+      - V2H
+  EVSEID:
+    description: >-
+      An ID that uniquely identifies the EVSE and the power outlet the
+      vehicle is connected to
+    type: object
+    additionalProperties: false
+    required:
+      - EVSE_ID
+    properties:
+      EVSE_ID:
+        description: EVSE ID
+        type: string
+      EVSEID_DIN:
+        description: EVSE ID (DIN70121) according to DIN SPEC 91286
+        type: string
+  DC_EVSEPresentVoltage_Current:
+    description: Set the present voltage and current for the EVSE
+    type: object
+    additionalProperties: false
+    required:
+      - EVSEPresentVoltage
+    properties:
+      EVSEPresentVoltage:
+        description: Output voltage of the EVSE as defined in IEC CDV 61851-23 in V
+        type: number
+        minimum: 0
+        maximum: 1500
+      EVSEPresentCurrent:
+        description: Present output current of the EVSE in A
+        type: number
+        minimum: 0
+        maximum: 10000
+  DC_EVSEMaximumLimits:
+    description: Maximum Values (current, power and voltage) the EVSE can deliver
+    type: object
+    additionalProperties: false
+    required:
+      - EVSEMaximumCurrentLimit
+      - EVSEMaximumPowerLimit
+      - EVSEMaximumVoltageLimit
+    properties:
+      EVSEMaximumCurrentLimit:
+        description: Maximum current the EVSE can deliver in A
+        type: number
+        minimum: -10000
+        maximum: 10000
+      EVSEMaximumPowerLimit:
+        description: Maximum power the EVSE can deliver in W
+        type: number
+        minimum: -1000000
+        maximum: 1000000
+      EVSEMaximumVoltageLimit:
+        description: Maximum voltage the EVSE can deliver in V
+        type: number
+        minimum: 0
+        maximum: 1500
+  DC_EVSEMinimumLimits:
+    description: Minimum Values (current and voltage) the EVSE can deliver
+    type: object
+    additionalProperties: false
+    required:
+      - EVSEMinimumCurrentLimit
+      - EVSEMinimumVoltageLimit
+    properties:
+      EVSEMinimumCurrentLimit:
+        description: Minimum current the EVSE can deliver with the expected accuracy in A
+        type: number
+        minimum: 0
+        maximum: 10000
+      EVSEMinimumVoltageLimit:
+        description: Minimum voltage the EVSE can deliver with the expected accuracy in V
+        type: number
+        minimum: 0
+        maximum: 1500
+  SetupPhysicalValues:
+    description: >-
+      Initial physical values for setup a AC or DC charging session
+    type: object
+    additionalProperties: false
+    properties:
+      ac_nominal_voltage:
+        description: >-
+          Set line voltage supported by the EVSE. This is the voltage measured
+          between one phase and neutral in V.
+        type: number
+        minimum: 0
+        maximum: 1000
+      dc_current_regulation_tolerance:
+        description: >-
+          Set the absolute magnitude of the regulation tolerance of the EVSE in A.
+        type: number
+        minimum: 0
+        maximum: 400
+      dc_peak_current_ripple:
+        description: >-
+          Set the peak-to-peak magnitude of the current ripple of the EVSE in A.
+        type: number
+        minimum: 0
+        maximum: 400
+      dc_energy_to_be_delivered:
+        description: Set the amount of energy to be deliveredby the EVSE in Wh (optional)
+        type: number
+        minimum: 0
+        maximum: 200000
+  DC_EVStatusType:
+    description: Current status of the EV
+    type: object
+    additionalProperties: false
+    required:
+      - DC_EVReady
+      - DC_EVErrorCode
+      - DC_EVRESSSOC
+    properties:
+      DC_EVReady:
+        description: If set to TRUE, the EV is ready to charge
+        type: boolean
+      DC_EVErrorCode:
+        description: Indicates the EV internal status
+        type: string
+        $ref: /iso15118_charger#/DC_EVErrorCode
+      DC_EVRESSSOC:
+        description: State of charge of the EVs battery (RESS)
+        type: number
+        minimum: 0
+        maximum: 100
+      DC_EVCabinConditioning:
+        description: >-
+          'DIN70121 only: The EV is using energy from the DC supply toheat
+          or cool the passenger compartment.'
+        type: boolean
+      DC_EVRESSConiditioning:
+        description: >-
+          'DIN70121 only: The vehicle is using energy from the DC charger
+          to condition the RESS to a target temperature.'
+        type: boolean
+  DC_EVTargetValues:
+    description: Target voltage and current requested by the EV
+    type: object
+    additionalProperties: false
+    required:
+      - DC_EVTargetVoltage
+      - DC_EVTargetCurrent
+    properties:
+      DC_EVTargetVoltage:
+        description: Target Voltage requested by EV in V
+        type: number
+        minimum: -2
+        maximum: 1500
+      DC_EVTargetCurrent:
+        description: Current demanded by EV in A
+        type: number
+        minimum: -2
+        maximum: 10000
+  DC_EVMaximumLimits:
+    description:
+      Maximum Values (current, power and voltage) supported and allowed
+      by the EV
+    type: object
+    additionalProperties: false
+    properties:
+      DC_EVMaximumCurrentLimit:
+        description: Maximum current supported and allowed by the EV in A
+        type: number
+        minimum: -2
+        maximum: 10000
+      DC_EVMaximumPowerLimit:
+        description: Maximum power supported and allowed by the EV in W (optional)
+        type: number
+        minimum: -2
+        maximum: 350000
+      DC_EVMaximumVoltageLimit:
+        description: Maximum voltage supported and allowed by the EV in V
+        type: number
+        minimum: -2
+        maximum: 1500
+  DC_EVRemainingTime:
+    description: Estimated or calculated time until bulk and full charge is complete
+    type: object
+    additionalProperties: false
+    properties:
+      EV_RemainingTimeToFullSoC:
+        description:
+          "[RFC3339 UTC] Estimated or calculated time until full charge
+          (100% SOC) is complete"
+        type: string
+        format: date-time
+      EV_RemainingTimeToBulkSoC:
+        description:
+          "[RFC3339 UTC] Estimated or calculated time until bulk charge
+          (approx. 80% SOC) is complete"
+        type: string
+        format: date-time
+  AppProtocol:
+    description: >-
+      This message element is used by the EVCC for transmitting the list
+      of supported protocols
+    type: object
+    additionalProperties: false
+    required:
+      - ProtocolNamespace
+      - VersionNumberMajor
+      - VersionNumberMinor
+      - SchemaID
+      - Priority
+    properties:
+      ProtocolNamespace:
+        description: >-
+          This message element is used by the EVCC to uniquely identify
+          the Namespace URI of a specific protocol supported by the EVCC
+        type: string
+        minLength: 1
+        maxLength: 100
+      VersionNumberMajor:
+        description: >-
+          This message element is used by the EVCC to indicate the major
+          version number of the protocol
+        type: integer
+        minimum: 0
+      VersionNumberMinor:
+        description: >-
+          This message element is used by the EVCC to indicate the minor
+          version number of the protocol
+        type: integer
+        minimum: 0
+      SchemaID:
+        description: >-
+          This message element is used by the EVCC to indicate the SchemaID
+          assigned by the EVCC to the protocol
+        type: integer
+        minimum: 0
+        maximum: 255
+      Priority:
+        description: >-
+          This message element is used by the EVCC for indicating the protocol
+          priority of a specific protocol allowing the SECC to select a protocol based
+          on priorities
+        type: integer
+        minimum: 1
+        maximum: 20
+  AppProtocols:
+    description: >-
+      This message element is used by the EVCC for transmitting the list
+      of supported protocols
+    type: object
+    additionalProperties: false
+    required:
+      - Protocols
+    properties:
+      Protocols:
+        type: array
+        items:
+          type: object
+          $ref: /iso15118_charger#/AppProtocol
+          additionalProperties: false
+        minItems: 1
+        maxItems: 20
+  V2G_Messages:
+    description: This element contains all V2G elements
+    type: object
+    additionalProperties: false
+    required:
+      - V2G_Message_ID
+    properties:
+      V2G_Message_ID:
+        description: This element contains the id of the v2g message body
+        type: string
+        $ref: /iso15118_charger#/V2G_Message_ID
+      V2G_Message_XML:
+        description: Contains the decoded EXI stream as V2G message XML file
+        type: string
+        minLength: 0
+      V2G_Message_JSON:
+        description: Contains the decoded EXI stream as V2G message JSON file
+        type: string
+        minLength: 0
+      V2G_Message_EXI_Hex:
+        description: Contains the EXI stream as hex string
+        type: string
+        minLength: 0
+      V2G_Message_EXI_Base64:
+        description: Contains the EXI stream as base64 string
+        type: string
+        minLength: 0
+  Response_Exi_Stream_Status:
+    description: The response raw exi stream and the status from the CSMS system
+    type: object
+    additionalProperties: false
+    required:
+      - status
+      - certificateAction
+    properties:
+      status:
+        description: >-
+          Indicates whether the message was processed properly
+          Accepted - The message was processed properly, exiResponse included
+          Failed - Processing of the message was not successful, no exiResponse included
+        type: string
+        enum:
+          - Accepted
+          - Failed
+      exiResponse:
+        description: >-
+          Raw CertificateInstallationRes or CertificateUpdateRes message
+          as exi stream (Base64 encoded)
+        type: string
+        maxLength: 5600
+      certificateAction:
+        description: Type of the certificate request
+        type: string
+        $ref: /iso15118_charger#/CertificateActionEnum
+  Request_Exi_Stream_Schema:
+    description: The request raw exi stream and the schema version for the CSMS system
+    type: object
+    additionalProperties: false
+    required:
+      - exiRequest
+      - iso15118SchemaVersion
+      - certificateAction
+    properties:
+      exiRequest:
+        description: >-
+          Raw CertificateInstallationReq or CertificateUpdateReq message as
+          exi stream (Base64 encoded)
+        type: string
+        maxLength: 5600
+      iso15118SchemaVersion:
+        description: Schema Version used for CertificateReq message between EV and Charger
+        type: string
+        maxLength: 50 
+      certificateAction:
+        description: Type of the certificate request
+        type: string
+        $ref: /iso15118_charger#/CertificateActionEnum
+  CertificateHashDataInfo:
+    description: Contains the certificate information
+    type: object
+    additionalProperties: false
+    required:
+      - hashAlgorithm
+      - issuerNameHash
+      - issuerKeyHash
+      - serialNumber
+      - responderURL
+    properties:
+      hashAlgorithm:
+        description: Used algorithms for the hashes provided
+        type: string
+        enum:
+          - SHA256
+          - SHA384
+          - SHA512
+      issuerNameHash:
+        description: Hashed value of the Issuer Distinguished Name
+        type: string
+        maxLength: 128
+      issuerKeyHash:
+        description: Hashed value of the issuers public key
+        type: string
+        maxLength: 128
+      serialNumber:
+        description: The serial number of the certificate
+        type: string
+        maxLength: 40
+      responderURL:
+        description: This contains the responder URL
+        type: string
+        maxLength: 512
+  CertificateActionEnum:
+    description: Specifies the type of a certificate request
+    type: string
+    enum:
+      - Install
+      - Update
+
